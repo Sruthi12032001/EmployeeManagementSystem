@@ -9,6 +9,7 @@ import { EmployeeService } from '../Service/employee.service';
   styleUrls: ['./login.component.sass']
 })
 export class LoginComponent implements OnInit {
+  error!: string
   mailValidation = true;
   validationBoolean = true;
   passwordValidation = true;
@@ -34,17 +35,13 @@ export class LoginComponent implements OnInit {
     } 
     if(this.validation(loginObj)) {
       this.service.login(loginObj).subscribe((res) => {
-        if(!res.hasOwnProperty('status')) {
           this.login = 'success';
-          this.service.token = true;
           setTimeout(() => {
             this.route.navigate(['home']);
           }, 2000);
-          
-        } else {
-          this.service.token = false;
-          this.login = 'failed';
-        }
+      }, (err: any) => {
+        this.error = err.error;
+        this.login = 'failed';
       });
     }
   }

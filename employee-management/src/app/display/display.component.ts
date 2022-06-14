@@ -18,17 +18,12 @@ export class DisplayComponent implements OnInit {
   constructor(private service: EmployeeService, private activeRoute: ActivatedRoute, @Inject(MAT_DIALOG_DATA) private data: string, private diaRef: MatDialogRef<HomeComponent> ) { }
 
   ngOnInit(): void {
-    if(this.service.token) {
-      this.hasToken = true;
-      this.service.getWithId(this.data).subscribe((res: any) => {
-        if(!res.hasOwnProperty('status')) {
-          this.user = res;
-          this.display = true;
-        } 
-      });
-    } else {
-      this.hasToken = false;
-    }
+    this.service.getWithId(this.data).subscribe((res: any) => {
+        this.user = res;
+        this.display = true; 
+    } ,(err) => {
+      this.display = false;
+    });
   }
 
   close() {

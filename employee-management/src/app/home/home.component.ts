@@ -14,6 +14,8 @@ import { EmployeeService } from '../Service/employee.service';
   styleUrls: ['./home.component.sass']
 })
 export class HomeComponent implements OnInit {
+  home!: boolean
+  error!: any
   modifiedUsers!: User[];
   users!: User[];
   searchInput = '';
@@ -22,16 +24,16 @@ export class HomeComponent implements OnInit {
   constructor(private dialog: MatDialog, private service: EmployeeService, private router: Router) { }
 
   ngOnInit(): void {
-    if(this.service.token) {
-      this.hasToken = true;
-      this.service.getAll().subscribe((res: any) => {
-        if(!res.hasOwnProperty('status')) {
-          this.users = <User[]>res;
-          this.modifiedUsers = this.users;
-        }
-      }); 
-    }
-    
+    this.service.getAll().subscribe((res: any) => {
+      if(!res.hasOwnProperty('status')) {
+        this.users = <User[]>res;
+        this.modifiedUsers = this.users;
+        this.home = true;
+      }
+    }, (err: any) => {
+      this.home = false;
+      this.error = err.error;
+    }); 
   }
 
   filterWithSearch() {

@@ -1,19 +1,5 @@
-<div *ngIf="!hasToken">
-    <div class="center">
-        SignUp or Login to access the home page 
-    </div>
-    <div class="flex">
-        <div>
-            <input type="button" routerLink="" value="Login">
-        </div>
-        <div>
-            <input type="button" routerLink="/signUp" value="Sign Up">
-        </div>
-        
-    </div>
 
-</div>
-<div *ngIf="hasToken">
+<div *ngIf="home">
     <div class="navigation-bar">
         <div class="heading-element">
             <h1>Student Details</h1>
@@ -84,4 +70,15 @@
         </tr>
         </table>
         
+    </div>
+    <div *ngIf="!home" class="center-div">
+            <h1 style="text-align: center">
+                {{ error }}
+            </h1>
+            <p style="text-align: center">Do you want to create?</p>
+            <br>
+            <div class="flex"> 
+                <input type="button" value="Create" routerLink="/create" >
+            </div>
+            
     </div>

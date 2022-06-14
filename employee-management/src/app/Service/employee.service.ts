@@ -23,7 +23,7 @@ export class EmployeeService {
     return this.http.post(`${environment.baseUrl}login`, object);
   }
 
-  signUp(object: Object) {
+  addUser(object: Object) {
     return this.http.post(`${environment.baseUrl}addUser`, object);
   }
 

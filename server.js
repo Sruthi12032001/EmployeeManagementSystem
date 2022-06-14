@@ -10,10 +10,11 @@ let token;
 app.get('/getAllUsers', (req, res) => {
     const data = fs.readFileSync("users.json");
     try{
-        res.send(JSON.parse(data));
+        
+        res.status(200).send(JSON.parse(data));
     }
     catch(err) {
-        res.send({status: 'notFound'});
+        res.status(404).send('User Details Not Found');
     }
    
 });
@@ -26,9 +27,9 @@ app.get('/getWithId/:id', (req, res) => {
         return user.id === id.toString();
     });
     if(user.length === 0) {
-        res.send({status: 'Not found'});
+        res.status(404).send('Not found');
     } else {
-        res.send(user[0]);
+        res.status(200).send(user[0]);
     }
 });
 
@@ -36,7 +37,7 @@ app.put('/update/:id', (req,res) => {
     const id = req.params.id;
     const data = fs.readFileSync("users.json");
     const users = JSON.parse(data);
-    const user = users.filter((user) => {
+    const userDetails = users.filter((user) => {
         if(user.id === id.toString()) {
             user.first_name = req.body.first_name;
             user.last_name = req.body.last_name;
@@ -49,13 +50,12 @@ app.put('/update/:id', (req,res) => {
             return user;
         };
     }); 
-    if(user.length === 0) {
-        res.send({status: 'Not Found'});
+    if(userDetails.length === 0) {
+        res.status(404).send('Not Found');
     } else {
         const updatedUsers = JSON.stringify(users);
         fs.writeFile('users.json', updatedUsers, err => {
-            if(err) throw err;
-            else res.send({"updated": true});
+            res.status(200).send(userDetails);
         });
     }
     
@@ -76,10 +76,10 @@ app.post('/addUser', (req, res) => {
         const newUsers = JSON.stringify(users);
         fs.writeFile('users.json', newUsers, err => {
             if(err) throw err;
-            else res.send({data : 'added'});
+            else res.status(200).send(found);
         });
     } else {
-        res.send({status: 'Already exist'});
+        res.status(404).send('Email Already Exist');
     }
     
 });
@@ -92,15 +92,15 @@ app.post('/signUp', (req, res) => {
     });
 
     if(found.length === 0) {
+        console.log('yes');
         const user = {id: generateUniqueId(), ...req.body};
         users.push(user);
         const newUsers = JSON.stringify(users);
         fs.writeFile('users.json', newUsers, err => {
-            if(err) throw err;
-            else res.send({token : generateUniqueId()});
+            res.status(200).send({token : generateUniqueId()});
         });
     } else {
-        res.send({status: 'Already exist'});
+        res.status(404).send('Email Already Exist');
     }
     
 });
@@ -112,9 +112,9 @@ app.post('/login', (req,res) => {
         return user.email_id === req.body.email_id && user.password === req.body.password;
     });
     if(user.length === 0) {
-        res.send({status: 'Not found'});
+        res.status(404).send('Enter valid details');
     } else {
-        res.send({ "token" : generateUniqueId() }); 
+        res.status(200).send({ "token" : generateUniqueId() }); 
     }
    
 });
@@ -132,10 +132,10 @@ app.delete('/delete/:id', (req, res) => {
         const newUsers = JSON.stringify(usersWithoutIdGiven);
         fs.writeFile('users.json', newUsers, err => {
             if(err) throw err;
-            else res.send({ 'deleted': true });
+            else res.status(200).send(usersWithoutIdGiven);
         }); 
     } else {
-        res.send({status : 'Not Found'});
+        res.status(404).send('User not found');
     }
       
 });

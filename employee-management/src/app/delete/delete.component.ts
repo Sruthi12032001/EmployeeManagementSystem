@@ -17,12 +17,6 @@ export class DeleteComponent implements OnInit {
   constructor(private employeeService: EmployeeService, private dialog: MatDialogRef<HomeComponent>, @Inject(MAT_DIALOG_DATA) private data: string, private router: Router) { }
 
   ngOnInit(): void {
-    if(this.employeeService.token) {
-      this.hasToken = true;
-    } else {
-      this.hasToken = false;
-    }
-
   }
   dialogue(value: boolean) {
     if(value) {
@@ -32,6 +26,8 @@ export class DeleteComponent implements OnInit {
           setTimeout(() => {
             this.dialog.close(true);
           }, 1000);
+        }, (err) => {
+          this.dialog.close(false);
         });
       } else {
         this.dialog.close(false);

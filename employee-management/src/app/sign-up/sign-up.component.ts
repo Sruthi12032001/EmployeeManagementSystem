@@ -9,6 +9,7 @@ import { EmployeeService } from '../Service/employee.service';
   styleUrls: ['./sign-up.component.sass']
 })
 export class SignUpComponent implements OnInit {
+  error!: string
   validaionBoolean = true;
   firstNameRegex = new RegExp('[A-Za-z]{3,16}');
   lastNameRegex = new RegExp('[A-Za-z]{1,16}');
@@ -54,18 +55,16 @@ export class SignUpComponent implements OnInit {
       address: this.add,
       pin_code: this.pin
     }
+
     if(this.validation(user)) {
-      this.service.signUp( user ).subscribe((res: any) => {
-        if(!res.hasOwnProperty('status')) {
+      this.service.create(user).subscribe((res: any) => {
           this.signedIn = 'signed';
-          this.service.token = true;
           setTimeout(() => {
             this.router.navigate(['home']);
           }, 2000);
-        } else {
-          this.service.token = false;
-          this.signedIn = 'failed';
-        }
+      }, (err: any) => {
+        this.error = err.error;
+        this.signedIn = 'failed';
       });
     }
    

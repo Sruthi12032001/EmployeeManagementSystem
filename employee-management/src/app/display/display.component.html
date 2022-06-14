@@ -1,17 +1,4 @@
-<div *ngIf="!hasToken">
-    <div class="center">
-        SignUp or Login to access the home page 
-    </div>
-    <div class="flex-not-found">
-        <div>
-            <input type="button" routerLink="" value="Login">
-        </div>
-        <div>
-            <input type="button" routerLink="/signUp" value="Sign Up">
-        </div>    
-    </div>
-</div>
-<div *ngIf="display && hasToken">
+<div *ngIf="display">
     <img src="https://www.svgrepo.com/show/69405/cross-sign.svg" (click)="close()" class="float">
     <h1>Employee Details</h1>
     <div class="container">

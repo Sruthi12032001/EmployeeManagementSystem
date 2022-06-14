@@ -12,7 +12,7 @@ import { EmployeeService } from '../Service/employee.service';
   styleUrls: ['./edit.component.sass']
 })
 export class EditComponent implements OnInit {
-  hasToken!: boolean;
+  error!: string
   userWithId!: User;
   validaionBoolean = true;
   firstNameRegex = new RegExp('[A-Za-z]{3,16}');
@@ -52,22 +52,16 @@ export class EditComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId = this.activeRoute.snapshot.params[('id')];
-    if(this.service.token) {
-      this.hasToken = true;
-      if(this.userId != undefined) {
-        this.operation = 'Edit the Details';
-        this.updateUser = true;
-        this.service.getWithId(this.userId).subscribe((res: any) => {
-          this.userWithId = <User>res;
-        })
-      } else {
-        this.operation = 'Create Account';
-        this.createUser = true;
-      }
+    if(this.userId != undefined) {
+      this.operation = 'Edit the Details';
+      this.updateUser = true;
+      this.service.getWithId(this.userId).subscribe((res: any) => {
+        this.userWithId = <User>res;
+      })
     } else {
-      this.hasToken = false;
-    }  
-
+      this.operation = 'Create Account';
+      this.createUser = true;
+    }
   }
 
   create() {
@@ -83,16 +77,16 @@ export class EditComponent implements OnInit {
     };
 
     if(this.validation(user)) {
-      this.service.create( user ).subscribe((res: any) => {
-        if(!res.hasOwnProperty('status')) {
-          this.edited = 'edited';
-
-          setTimeout(() => {
-            this.router.navigate(['home']);
-          }, 2000);
-        } else {
-          this.edited = 'failed';
-        }
+      this.service.addUser(user).subscribe((res: any) => {
+        this.edited = 'edited';
+        this.dialogue.open(ResultComponent, {
+          data: "Created Employee Account"
+        }).afterClosed().subscribe((res) => {
+          this.router.navigate(['home']);
+        });
+      },(err) => {
+        this.error = err.error;
+        this.edited = 'failed';
       });
     }
   }
@@ -111,25 +105,22 @@ export class EditComponent implements OnInit {
 
     if(this.validation(user)) {
       this.service.update( this.userId, user ).subscribe((res: any)=> {
-        if(!res.hasOwnProperty('status')) {
-          console.log('yes');
+        console.log('yes');
           this.edited = 'edited';
           this.dialogue.open(ResultComponent, {
-            data: "Edit Successfull"
+            data: "Edited Employee Detail"
           }).afterClosed().subscribe((res) => {
             this.router.navigate(['home']);
           });
-          
-        } else {
-          this.edited = 'failed';
-        }
+      }, (err) => {
+        this.error = err.error;
+        this.edited = 'failed';
       });
     }
   }
 
   validation(user: User) {
     if(user.first_name === undefined || !user.first_name.match(this.firstNameRegex)) {
-      console.log(user.first_name.match(this.firstNameRegex));
       this.firstNameValidation = false;
       this.validaionBoolean = false;
     } else if(user.first_name.match(this.firstNameRegex)) {
