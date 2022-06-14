@@ -1,0 +1,28 @@
+<div *ngIf="!hasToken">
+    <div class="center">
+        SignUp or Login to access the home page 
+    </div>
+    <div class="flex-not-found">
+        <div>
+            <input type="button" routerLink="" value="Login">
+        </div>
+        <div>
+            <input type="button" routerLink="/signUp" value="Sign Up">
+        </div>    
+    </div>
+</div>
+<div *ngIf="hasToken">
+    <div *ngIf="!deleted" class="delete-popup">
+        <div class="content-element">
+            <p class="delete-content-element">Are you sure you want to delete this account?</p>
+        </div>
+        <div class="delete-button-element">
+            <input type="button" class="delete-button" value="Yes" (click)="dialogue(true)" >
+            <input type="button" class="delete-button" value="No" (click)="dialogue(false)">
+        </div>
+</div>
+
+<div *ngIf="deleted" class="deletion-successfull">
+    <div>Deleted successfully</div>
+</div>
+</div>

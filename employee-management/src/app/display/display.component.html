@@ -1,0 +1,39 @@
+<div *ngIf="!hasToken">
+    <div class="center">
+        SignUp or Login to access the home page 
+    </div>
+    <div class="flex-not-found">
+        <div>
+            <input type="button" routerLink="" value="Login">
+        </div>
+        <div>
+            <input type="button" routerLink="/signUp" value="Sign Up">
+        </div>    
+    </div>
+</div>
+<div *ngIf="display && hasToken">
+    <img src="https://www.svgrepo.com/show/69405/cross-sign.svg" (click)="close()" class="float">
+    <h1>Employee Details</h1>
+    <div class="container">
+        <div class="items">
+            <div class="flex"><div class="flex"><img src="https://www.svgrepo.com/show/421471/user-admin.svg"> </div> <div>{{ user.first_name }} {{ user.last_name }}</div></div>
+        </div>
+        <div class="items">
+            <div class="flex"><div class="flex"><img src="https://img.icons8.com/ios-filled/2x/age.png"> </div> <div>{{ user.age }}</div></div>
+        </div> 
+        <div class="items">
+            <div class="flex"><div class="flex"><img src="https://img.icons8.com/ios-glyphs/2x/new-post.png"> </div> <div>{{ user.email_id }}</div></div>
+        </div>
+        <div class="items">
+            <div class="flex"><div class="flex"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU3vSJW8DUc19RoNcrgRkU-dwbiX_2DV_IKg&usqp=CAU"></div><div>{{ user.employee_type }}</div></div>
+        </div>
+        <div class="items">
+            <div class="flex"><div class="flex"><img src="https://img.icons8.com/external-smashingstocks-glyph-smashing-stocks/2x/external-address-finance-smashingstocks-glyph-smashing-stocks.png"></div><div>{{ user.address }}</div></div>
+        </div>
+        <div class="items">
+            <div class="flex"><div class="flex"><img src="https://img.icons8.com/ios-glyphs/2x/cancel-4-digits.png"></div><div>{{ user.pin_code }}</div></div>
+        </div> 
+    </div>
+</div>    
+    
+    

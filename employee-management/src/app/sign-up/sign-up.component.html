@@ -1,0 +1,40 @@
+<fieldset class="login" *ngIf="signedIn === 'failed' || signedIn === ''">
+    <legend><img src="/assets/WhatsApp Image 2022-06-04 at 6.27.08 PM.jpeg" class="img"></legend>
+    <h3> Create Account</h3>
+    <p class="center" *ngIf="signedIn === 'failed'">Email is already registered</p>
+    <label>First Name<sup>*</sup></label>
+    <input type="text" placeholder="First name" [(ngModel)]="f_name">
+    <br>
+    <p class="red" *ngIf="!firstNameValidation">Enter valid first name</p>
+    <label>Last Name<sup>*</sup></label>
+    <input type="text" placeholder="Last name" [(ngModel)]="l_name">
+    <br>
+    <p class="red" *ngIf="!lastNameValidation">Enter valid last name</p>
+    <label>Age<sup>*</sup></label>
+    <input type="text" placeholder="age" [(ngModel)]="age">
+    <br>
+    <p class="red" *ngIf="!ageValidation">Enter the valid age</p>
+    <label>Email Id<sup>*</sup></label>
+    <input type="text" placeholder="mail@website.com" [(ngModel)]="inputMail">
+    <br>
+    <p class="red" *ngIf="!mailValidation">Enter valid mail id</p>
+    <label>Password<sup>*</sup></label>
+    <input type="password" placeholder="min 8 characters" [(ngModel)]="pwd">
+    <br>
+    <p class="red" *ngIf="!passwordValidation">Enter valid password</p>
+    <label>Employee type<sup>*</sup></label>
+    <input type="text" placeholder="employee type" [(ngModel)]="empl_type">
+    <br>
+    <p class="red" *ngIf="!employeeTypeValidation">Enter valid employee type</p>
+    <label>Address<sup>*</sup></label>
+    <input type="text" placeholder="Address" [(ngModel)]="add">
+    <br>
+    <p class="red" *ngIf="!addressValidation">Enter valid Address</p>
+    <label>Pin Code<sup>*</sup></label>
+    <input type="text" placeholder="Pin Code" [(ngModel)]="pin">
+    <br>
+    <p class="red" *ngIf="!pinCodeValidation">Enter valid pin code</p>
+    <input type="button" (click)="signUp()" value="Create">
+    <br>
+    <p>Already registered? <a routerLink="" class="create">Login here</a></p>
+</fieldset>
