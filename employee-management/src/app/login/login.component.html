@@ -1,6 +1,6 @@
 <fieldset class="login" *ngIf="login === '' || login === 'failed'">
     <legend><img src="/assets/WhatsApp Image 2022-06-04 at 6.27.08 PM.jpeg" class="img"></legend>
-    <h3>Admin Login</h3>
+    <h3>Student Login</h3>
     <p *ngIf="login === 'failed'" class="center">{{ error }}</p>
     <label>EmailId<sup>*</sup></label>
     <input type="text" placeholder="mail@website.com" [(ngModel)]="mail">

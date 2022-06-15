@@ -1,6 +1,11 @@
 <div *ngIf="display">
+
     <img src="https://www.svgrepo.com/show/69405/cross-sign.svg" (click)="close()" class="float">
-    <h1>Employee Details</h1>
+    <div class="title">
+        <h1>Employee Details</h1>
+    </div>
+   
+    <br>
     <div class="container">
         <div class="items">
             <div class="flex"><div class="flex"><img src="https://www.svgrepo.com/show/421471/user-admin.svg"> </div> <div>{{ user.first_name }} {{ user.last_name }}</div></div>

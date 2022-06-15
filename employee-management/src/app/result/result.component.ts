@@ -14,6 +14,7 @@ export class ResultComponent implements OnInit {
 
   ngOnInit(): void {
     this.value =this.data;
+    this.dia.updateSize('200px' , 'auto');
     setTimeout(() => {
       this.dia.close(true);
     }, 2000);

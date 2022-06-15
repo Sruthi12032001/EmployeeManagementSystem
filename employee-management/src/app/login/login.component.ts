@@ -13,8 +13,8 @@ export class LoginComponent implements OnInit {
   mailValidation = true;
   validationBoolean = true;
   passwordValidation = true;
-  mailRegex = new RegExp('([a-zA-Z0-9][a-zA-Z0-9.]+@[a-zA-Z0-9]+([.][a-zA-Z]+)+)');
-  passwordRegex = new RegExp('(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[%$@!]).{8,20}');
+  mailRegex = new RegExp('[a-zA-Z0-9][a-zA-Z0-9]+@[a-zA-Z0-9]+([\.][a-zA-Z]+)+');
+  passwordRegex = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*');
   mailMin = 15;
   mailMax = 30;
   pwdMin = 8;
@@ -34,7 +34,8 @@ export class LoginComponent implements OnInit {
       password: this.pwd
     } 
     if(this.validation(loginObj)) {
-      this.service.login(loginObj).subscribe((res) => {
+      this.service.login(loginObj).subscribe((res: any) => {
+          localStorage.setItem('token', res.token);
           this.login = 'success';
           setTimeout(() => {
             this.route.navigate(['home']);
@@ -47,20 +48,33 @@ export class LoginComponent implements OnInit {
   }
 
   validation(loginObj: Login) {
-    console.log(loginObj.password.match(this.passwordRegex));
-    if(loginObj.email_id === undefined || !loginObj.email_id.match(this.mailRegex) || (loginObj.email_id.length < this.mailMin || loginObj.email_id.length > this.mailMax))  {
+    
+    if(loginObj.email_id != undefined) {
+      const foundmail = loginObj.email_id.match(this.mailRegex);
+      if( foundmail != null && foundmail[0].length === loginObj.email_id.length && foundmail[0].length >= this.mailMin && foundmail[0].length <= this.mailMax) {
+        this.mailValidation = true;
+        this.validationBoolean = this.validationBoolean && true;
+      } else {
+        this.mailValidation = false;
+        this.validationBoolean = this.validationBoolean && false;
+      } 
+    } else {
       this.mailValidation = false;
-      this.validationBoolean = false;
-    } else if(loginObj.email_id.match(this.mailRegex) && loginObj.email_id.length >= this.mailMin && loginObj.email_id.length <= this.mailMax) {
-      this.mailValidation = true;
-      this.validationBoolean = this.validationBoolean && true;
+      this.validationBoolean = this.validationBoolean && false;
     }
-    if(loginObj.password === undefined || !loginObj.password.match(this.passwordRegex) ||  (loginObj.password.length < this.pwdMin || loginObj.password.length > this.pwdMax)) {
+    
+    if(loginObj.password != undefined) {
+      const foundPassword = loginObj.password.match(this.passwordRegex);
+      if( foundPassword != null && foundPassword[0].length === loginObj.password.length && foundPassword[0].length >= this.pwdMin && foundPassword[0].length <= this.pwdMax) {
+          this.passwordValidation = true;
+          this.validationBoolean = this.validationBoolean && true;
+      } else {
+        this.passwordValidation = false;
+        this.validationBoolean = this.validationBoolean && false;
+      } 
+    } else {
       this.passwordValidation = false;
-      this.validationBoolean = false;
-    } else if(loginObj.password.match(this.passwordRegex) &&  loginObj.password.length >= this.pwdMin && loginObj.password.length <= this.pwdMax) {
-      this.passwordValidation = true;
-      this.validationBoolean = this.validationBoolean && true;
+      this.validationBoolean = this.validationBoolean && false;
     }
   return this.validationBoolean;
   }
